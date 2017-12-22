@@ -1,0 +1,104 @@
+---
+# tasks file for slurm
+
+- name: install epel repository
+  yum: name=epel-release state=present
+
+- name: install required packages
+  yum: name={{ item }} state=present
+  with_items:
+    - libselinux-python
+    - gcc
+    - munge
+    - munge-libs
+    - munge-devel
+    - hwloc
+    - pam-devel
+    - ncurses-devel
+    - gtk2-devel
+    - perl-devel
+    - perl-CPAN
+
+- name: create munge key
+  shell: create-munge-key
+  args:
+    creates: /etc/munge/munge.key
+  notify: restart munge
+
+- name: enable munge service
+  service: name=munge enabled=yes
+
+- name: check if already installed
+  stat: path={{ slurm_prefix }}/bin
+  register: slurm_bin
+  changed_when: slurm_bin.stat.exists == False
+
+- include: install.yml
+  when: slurm_bin.stat.exists == False
+
+- name: copy slurm startup script
+  template: src=init.d.slurm.j2 dest=/etc/init.d/slurm owner=root group=root mode=0700
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == "6"
+
+- name: copy slurmctl startup script
+  template: src=slurmctld.service.j2 dest=/usr/lib/systemd/system/slurmctld.service owner=root group=root mode=0700
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == "7"
+
+- name: copy slurm startup script
+  template: src=slurmd.service.j2 dest=/usr/lib/systemd/system/slurmd.service owner=root group=root mode=0700
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == "7"
+
+- name: create config directory
+  file: path={{ slurm_prefix }}/etc state=directory owner=root group=root mode=0755
+
+
+- name: copy slurm config example
+  copy: src=slurm.conf.example dest={{ slurm_prefix }}/etc owner=root group=root mode=0644
+
+- name: copy slurm config example bluegene
+  copy: src=slurm.conf.bluegene dest={{ slurm_prefix }}/etc owner=root group=root mode=0644
+
+- name: copy slurm config example fakecluster
+  copy: src=slurm.conf.fakecluster dest={{ slurm_prefix }}/etc owner=root group=root mode=0644
+
+- name: copy slurm config example linux
+  copy: src=slurm.conf.linux dest={{ slurm_prefix }}/etc owner=root group=root mode=0644
+
+- name: copy slurm config example dev
+  copy: src=slurm.conf.dev dest={{ slurm_prefix }}/etc owner=root group=root mode=0644
+
+- name: copy slurmdbd config example
+  copy: src=slurmdbd.conf.example dest={{ slurm_prefix }}/etc owner=root group=root mode=0644
+
+- name: create slurm group
+  group: name=slurm gid=105 state=present
+
+- name: create slurm user
+  user: name=slurm uid=105 group=slurm createhome=no home={{ slurm_prefix }} shell=/bin/nologin state=present
+
+- name: create slurm directories
+  file: path={{ item }} state=directory owner=slurm mode=755
+  with_items:
+    - /var/spool/slurmd
+    - /var/log/slurm
+
+- name: create slurm var files
+  file: path={{ item }} state=touch owner=slurm group=slurm mode=755
+  with_items:
+    - /var/spool/slurmd
+    - /var/log/slurm/slurmctld.log
+    - /var/log/slurm/slurmctld.pid
+    - /var/log/slurm/slurmd.log
+    - /var/log/slurm/slurmd.pid
+
+
+- name: set path with systemwide bashrc
+  lineinfile:
+    dest=/etc/bashrc
+    line={{ item }}
+    state=present
+  with_items:
+   - "alias j='. jump.sh'"
+   - "PATH=$PATH:/opt/slurm/16.05.11/sbin"
+   - "PATH=$PATH:/opt/slurm/16.05.11/bin"
+   - "export PATH"

@@ -1,0 +1,16 @@
+---
+galaxy_info:
+  author: Koji Tanaka
+  description: Installs SLURM Workload Manager
+  company: RDI2
+  license: MIT
+  min_ansible_version: 1.9
+  platforms:
+    - name: EL
+      versions:
+        - 6
+        - 7
+  categories:
+    - packaging
+    - system
+dependencies: []
