@@ -4,11 +4,12 @@ After=network.target
 ConditionPathExists={{ slurm_prefix }}/etc/slurm.conf
 
 [Service]
+User={{ slurm_user }}
 Type=forking
 EnvironmentFile=-/etc/sysconfig/slurmd
 ExecStart={{ slurm_prefix }}/sbin/slurmd $SLURMD_OPTIONS
 ExecReload=/bin/kill -HUP $MAINPID
-PIDFile=/var/run/slurmd.pid
+PIDFile=/var/log/slurm/slurmd.pid
 KillMode=process
 LimitNOFILE=51200
 LimitMEMLOCK=infinity
