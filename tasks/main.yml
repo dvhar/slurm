@@ -91,6 +91,15 @@
     - /var/log/slurm/slurmd.log
     - /var/log/slurm/slurmd.pid
 
+- name: enable services
+  systemd:
+    name: slurmctld
+    enabled: yes
+
+- name: enable services
+  systemd:
+    name: slurmd
+    enabled: yes
 
 - name: set path with systemwide bashrc
   lineinfile:
@@ -99,6 +108,11 @@
     state=present
   with_items:
    - "alias j='. jump.sh'"
+   - "alias sr='systemctl start'"
+   - "alias sq='systemctl stop'"
+   - "alias st='systemctl status'"
+   - "alias se='systemctl enable'"
+   - "alias sd='systemctl disable'"
    - "PATH=$PATH:/opt/slurm/16.05.11/sbin"
    - "PATH=$PATH:/opt/slurm/16.05.11/bin"
    - "export PATH"
