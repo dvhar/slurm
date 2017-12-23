@@ -53,19 +53,15 @@
 
 
 - name: copy slurm config example
-  copy: src=slurm.conf.example dest={{ slurm_prefix }}/etc owner=root group=root mode=0644
+  copy: src={{ item}} dest={{ slurm_prefix }}/etc owner=root group=root mode=0644
+  with_items:
+    - slurm.conf.example
+    - slurm.conf.bluegene
+    - slurm.conf.fakecluster
+    - slurm.conf.linux
+    - slurm.conf.dev
+    - slurm.conf
 
-- name: copy slurm config example bluegene
-  copy: src=slurm.conf.bluegene dest={{ slurm_prefix }}/etc owner=root group=root mode=0644
-
-- name: copy slurm config example fakecluster
-  copy: src=slurm.conf.fakecluster dest={{ slurm_prefix }}/etc owner=root group=root mode=0644
-
-- name: copy slurm config example linux
-  copy: src=slurm.conf.linux dest={{ slurm_prefix }}/etc owner=root group=root mode=0644
-
-- name: copy slurm config example dev
-  copy: src=slurm.conf.dev dest={{ slurm_prefix }}/etc owner=root group=root mode=0644
 
 - name: copy slurmdbd config example
   copy: src=slurmdbd.conf.example dest={{ slurm_prefix }}/etc owner=root group=root mode=0644
