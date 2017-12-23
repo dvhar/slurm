@@ -66,11 +66,11 @@
 - name: copy slurmdbd config example
   copy: src=slurmdbd.conf.example dest={{ slurm_prefix }}/etc owner=root group=root mode=0644
 
-- name: create slurm group
-  group: name=slurm gid=105 state=present
+#- name: create slurm group
+  #group: name=slurm gid=105 state=present
 
-- name: create slurm user
-  user: name=slurm uid=105 group=slurm createhome=no home={{ slurm_prefix }} shell=/bin/nologin state=present
+#- name: create slurm user
+  #user: name=slurm uid=105 group=slurm createhome=no home={{ slurm_prefix }} shell=/bin/nologin state=present
 
 - name: create slurm directories
   file: path={{ item }} state=directory owner={{ slurm_user }} mode=755
@@ -91,11 +91,13 @@
   systemd:
     name: slurmctld
     enabled: yes
+    state: started
 
 - name: enable services
   systemd:
     name: slurmd
     enabled: yes
+    state: started
 
 - name: set path with systemwide bashrc
   lineinfile:
