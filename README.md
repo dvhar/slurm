@@ -17,8 +17,8 @@ CentOS 6.7 and 7.2 are supported and tested so far.
 Default Variables
 -----------------
 
-- slurm_version: `15.08.4`
-- slurm_url: `http://www.schedmd.com/download/latest/slurm-{{ slurm_version }}.tar.bz2`
+- slurm_version: `17.11.1-2`
+- slurm_url: `https://download.schedmd.com/slurm/slurm-{{ slurm_version }}.tar.bz2`
 - slurm_prefix: `/opt/slurm/{{ slurm_version }}`
 
 Dependencies
@@ -40,7 +40,8 @@ License
 
 MIT License.
 
-Author
+Authors
 ------
 
 - Koji Tanaka - RDI2
+- David Hardy

@@ -93,7 +93,7 @@
     enabled: yes
     state: started
 
-- name: enable services
+- name: enable service
   systemd:
     name: slurmd
     enabled: yes
@@ -111,6 +111,6 @@
    - "alias st='systemctl status'"
    - "alias se='systemctl enable'"
    - "alias sd='systemctl disable'"
-   - "PATH=$PATH:/opt/slurm/16.05.11/sbin"
-   - "PATH=$PATH:/opt/slurm/16.05.11/bin"
+   - "PATH=$PATH:{{ slurm_prefix }}/sbin"
+   - "PATH=$PATH:{{ slurm_prefix }}/bin"
    - "export PATH"
