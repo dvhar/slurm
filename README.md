@@ -33,7 +33,7 @@ Include the role like this:
 
     - hosts: servers
       roles:
-         - { role: RDI2.slurm }
+         - { role: slurm }
 
 License
 -------

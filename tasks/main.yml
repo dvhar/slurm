@@ -26,7 +26,7 @@
   notify: restart munge
 
 - name: enable munge service
-  service: name=munge enabled=yes
+  service: name=munge enabled=yes state=started
 
 - name: check if already installed
   stat: path={{ slurm_prefix }}/bin
@@ -87,13 +87,13 @@
     - /var/log/slurm/slurmd.log
     - /var/log/slurm/slurmd.pid
 
-- name: enable services
+- name: enable slurmctld service
   systemd:
     name: slurmctld
     enabled: yes
     state: started
 
-- name: enable service
+- name: enable slurmd service
   systemd:
     name: slurmd
     enabled: yes
