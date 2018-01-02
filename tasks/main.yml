@@ -19,11 +19,11 @@
     - perl-devel
     - perl-CPAN
 
-- name: create munge key
-  shell: create-munge-key
-  args:
-    creates: /etc/munge/munge.key
-  notify: restart munge
+#- name: create munge key
+#  shell: create-munge-key
+#  args:
+#    creates: /etc/munge/munge.key
+#  notify: restart munge
 
 - name: enable munge service
   service: name=munge enabled=yes state=started
@@ -87,17 +87,20 @@
     - /var/log/slurm/slurmd.log
     - /var/log/slurm/slurmd.pid
 
-- name: enable slurmctld service
-  systemd:
-    name: slurmctld
-    enabled: yes
-    state: started
+#- name: enable slurmctld service
+#  systemd:
+#    name: slurmctld
+#    enabled: yes
+#    state: started
 
-- name: enable slurmd service
-  systemd:
-    name: slurmd
-    enabled: yes
-    state: started
+#- name: enable slurmd service
+#  systemd:
+#    name: slurmd
+#    enabled: yes
+#    state: started
+
+- include: {{ node_type }}.yml
+
 
 - name: set path with systemwide bashrc
   lineinfile:
@@ -111,6 +114,7 @@
    - "alias st='systemctl status'"
    - "alias se='systemctl enable'"
    - "alias sd='systemctl disable'"
+   - "alias sn='systemctl restart'"
    - "PATH=$PATH:{{ slurm_prefix }}/sbin"
    - "PATH=$PATH:{{ slurm_prefix }}/bin"
    - "export PATH"

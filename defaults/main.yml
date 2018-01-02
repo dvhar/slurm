@@ -7,3 +7,6 @@ slurm_url: https://download.schedmd.com/slurm/slurm-{{ slurm_version }}.tar.bz2
 slurm_prefix: /opt/slurm/{{ slurm_version }}
 
 slurm_user: vagrant
+
+node_type: master
+#node_type: slave

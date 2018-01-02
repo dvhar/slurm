@@ -1,0 +1,16 @@
+VAGRANTFILE_API_VERSION = "2"
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+# Use the same key for each machine
+  config.ssh.insert_key = false
+  config.vm.define "first" do |first|
+    first.vm.box = "centos/7"
+#   first.vm.network "private_network", ip: "172.28.128.4"
+    first.vm.network "private_network", type: "dhcp"
+  end
+  config.vm.define "second" do |second|
+    second.vm.box = "centos/7"
+#   second.vm.network "private_network", ip: "172.28.128.5"
+    second.vm.network "private_network", type: "dhcp"
+    second.vm.network "forwarded_port", guest: 80, host: 4536, auto_correct: true
+  end
+end

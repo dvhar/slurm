@@ -1,0 +1,4 @@
+ - hosts: vcluster
+   become: true
+   roles:
+   - { role: slurm }

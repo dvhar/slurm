@@ -1,0 +1,16 @@
+---
+- name: Transfer munge key
+  synchronize:
+    src: /etc/munge/munge.key
+    dest: /etc/munge/munge.key
+    mode: push
+  delegate_to: {{ controller }}
+
+
+- name: enable slurmd service
+  systemd:
+    name: slurmd
+    enabled: yes
+    state: started
+
+
