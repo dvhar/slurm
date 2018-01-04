@@ -25,6 +25,16 @@
 #    creates: /etc/munge/munge.key
 #  notify: restart munge
 
+- stat: path=/etc/munge/munge.key
+  register: munge_key
+
+- shell: echo -n "{{ munge_passwd }}" | sha512sum | cut -d' ' -f1 >/etc/munge/munge.key
+  notify: restart munge
+  when: not munge_key.stat.exists
+
+- name: Set correct permissions to munge.key
+  file: path=/etc/munge/munge.key owner=munge group=munge mode=0400
+
 - name: enable munge service
   service: name=munge enabled=yes state=started
 
@@ -35,10 +45,6 @@
 
 - include: install.yml
   when: slurm_bin.stat.exists == False
-
-#- name: copy slurm startup script
-#  template: src=init.d.slurm.j2 dest=/etc/init.d/slurm owner=root group=root mode=0700
-#  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == "6"
 
 - name: copy slurmctl startup script
   template: src=slurmctld.service.j2 dest=/usr/lib/systemd/system/slurmctld.service owner=root group=root mode=0700
@@ -51,16 +57,19 @@
 - name: create config directory
   file: path={{ slurm_prefix }}/etc state=directory owner=root group=root mode=0755
 
+- name: copy slurm conf
+  template: src=slurm.conf.j2 dest={{ slurm_prefix}}/etc/slurm.conf owner=root group=root mode=0644
 
-- name: copy slurm config example
-  copy: src={{ item}} dest={{ slurm_prefix }}/etc owner=root group=root mode=0644
-  with_items:
-    - slurm.conf.example
-    - slurm.conf.bluegene
-    - slurm.conf.fakecluster
-    - slurm.conf.linux
-    - slurm.conf.dev
-    - slurm.conf
+#- name: copy slurm config example
+#  template: src={{ item}} dest={{ slurm_prefix }}/etc owner=root group=root mode=0644
+#  with_items:
+#    - slurm.conf.j2
+#    - slurm.conf.example
+#    - slurm.conf.bluegene
+#    - slurm.conf.fakecluster
+#    - slurm.conf.linux
+#    - slurm.conf.dev
+#    - slurm.conf
 
 
 - name: copy slurmdbd config example
@@ -87,19 +96,24 @@
     - /var/log/slurm/slurmd.log
     - /var/log/slurm/slurmd.pid
 
-#- name: enable slurmctld service
-#  systemd:
-#    name: slurmctld
-#    enabled: yes
-#    state: started
 
-#- name: enable slurmd service
-#  systemd:
-#    name: slurmd
-#    enabled: yes
-#    state: started
+#- include: "{{ node_type }}.yml"
+- include: "hoststuff.yml"
 
-- include: {{ node_type }}.yml
+- name: enable slurmd service
+  systemd:
+    name: slurmd
+    enabled: yes
+    state: started
+  when: node_type == "slave"
+
+- name: enable slurmctld service
+  systemd:
+    name: slurmctld
+    enabled: yes
+    state: started
+  when: node_type == "master"
+
 
 
 - name: set path with systemwide bashrc
@@ -108,7 +122,6 @@
     line={{ item }}
     state=present
   with_items:
-   - "alias j='. jump.sh'"
    - "alias sr='systemctl start'"
    - "alias sq='systemctl stop'"
    - "alias st='systemctl status'"

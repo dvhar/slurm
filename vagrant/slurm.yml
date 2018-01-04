@@ -1,4 +1,13 @@
- - hosts: vcluster
-   become: true
-   roles:
-   - { role: slurm }
+
+  - hosts: vcluster
+    tasks: [ ]
+
+  - hosts: first
+    become: true
+    roles:
+    - { role: slurm, node_type: master }
+
+  - hosts: second
+    become: true
+    roles:
+    - { role: slurm, node_type: slave }

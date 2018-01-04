@@ -1,10 +1,4 @@
 ---
-- name: create munge key
-  shell: create-munge-key
-  args:
-    creates: /etc/munge/munge.key
-  notify: restart munge
-
 
 - name: enable slurmctld service
   systemd:

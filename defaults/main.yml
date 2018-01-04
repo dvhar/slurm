@@ -1,12 +1,14 @@
 ---
 # defaults file for slurm
 
-#slurm_version: 16.05.11
 slurm_version: 17.11.1-2
 slurm_url: https://download.schedmd.com/slurm/slurm-{{ slurm_version }}.tar.bz2
 slurm_prefix: /opt/slurm/{{ slurm_version }}
 
-slurm_user: vagrant
 
-node_type: master
-#node_type: slave
+#these ones can be changed depending on your setup:
+slurm_user: vagrant
+munge_passwd: slurmz
+cpus_per_node: 1
+partition_name: debug
+cluster: vcluster2

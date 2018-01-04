@@ -2,7 +2,7 @@
 # Replace "HOSTNAME" with computer's name ("hostname -s")
 # Replace "vagrant" with your user name ("id -un")
 #
-ControlMachine=localhost                                      # CHANGE "localhost"
+ControlMachine={{ groups['controller'][0] }}
 #ControlAddr=127.0.0.1
 
 AuthType=auth/munge
@@ -35,6 +35,12 @@ SwitchType=switch/none
 
 # 
 # COMPUTE NODES
-NodeName=localhost CPUs=1                                     # CHANGE "localhost"
-PartitionName=debug Nodes=localhost Default=YES MaxTime=INFINITE State=UP
+#NodeName=localhost CPUs=1                                     # CHANGE "localhost"
+{% for cn in groups['workers'] %}
+NodeName={{ cn }} CPUs={{ cpus_per_node }} State=UNKNOWN
+{% endfor %}
+#PartitionName=debug Nodes=localhost Default=YES MaxTime=INFINITE State=UP
+
+PartitionName={{ partition_name }} Nodes={% for cn in groups['workers'] -%}{{ cn }}{% if not loop.last -%}
+,{% endif %}{% endfor %} Default=YES MaxTime=INFINITE State=UP
 

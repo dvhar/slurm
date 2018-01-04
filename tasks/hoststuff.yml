@@ -1,0 +1,12 @@
+
+- name: put nodes in hostfile
+  lineinfile:
+    dest=/etc/hosts
+    line="{{ hostvars[item].ansible_eth1.ipv4.address }} {{ item }}"
+    state=present
+  with_items:
+   - "{{ groups[cluster] }}"
+
+- name: set hostname
+  hostname:
+    name: "{{ inventory_hostname }}"
