@@ -1,13 +1,12 @@
-
   - hosts: vcluster
     tasks: [ ]
 
-  - hosts: first
+  - hosts: controller
     become: true
     roles:
-    - { role: slurm, node_type: master }
+    - { role: RDI2.slurm, cluster: vcluster, node_type: master }
 
-  - hosts: second
+  - hosts: workers
     become: true
     roles:
-    - { role: slurm, node_type: slave }
+    - { role: RDI2.slurm, cluster: vcluster, node_type: slave }

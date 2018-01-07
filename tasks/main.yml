@@ -19,16 +19,12 @@
     - perl-devel
     - perl-CPAN
 
-#- name: create munge key
-#  shell: create-munge-key
-#  args:
-#    creates: /etc/munge/munge.key
-#  notify: restart munge
 
 - stat: path=/etc/munge/munge.key
   register: munge_key
 
-- shell: echo -n "{{ munge_passwd }}" | sha512sum | cut -d' ' -f1 >/etc/munge/munge.key
+- name: create munge key
+  shell: echo -n "{{ munge_passwd }}" | sha512sum | cut -d' ' -f1 >/etc/munge/munge.key
   notify: restart munge
   when: not munge_key.stat.exists
 
@@ -57,18 +53,12 @@
 - name: create config directory
   file: path={{ slurm_prefix }}/etc state=directory owner=root group=root mode=0755
 
-- name: copy slurm conf
+- name: copy slurm config
   template: src=slurm.conf.j2 dest={{ slurm_prefix}}/etc/slurm.conf owner=root group=root mode=0644
 
 #- name: copy slurm config example
 #  template: src={{ item}} dest={{ slurm_prefix }}/etc owner=root group=root mode=0644
 #  with_items:
-#    - slurm.conf.j2
-#    - slurm.conf.example
-#    - slurm.conf.bluegene
-#    - slurm.conf.fakecluster
-#    - slurm.conf.linux
-#    - slurm.conf.dev
 #    - slurm.conf
 
 
@@ -97,7 +87,6 @@
     - /var/log/slurm/slurmd.pid
 
 
-#- include: "{{ node_type }}.yml"
 - include: "hoststuff.yml"
 
 - name: enable slurmd service

@@ -11,4 +11,3 @@ slurm_user: vagrant
 munge_passwd: slurmz
 cpus_per_node: 1
 partition_name: debug
-cluster: vcluster2
