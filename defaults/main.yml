@@ -7,7 +7,7 @@ slurm_prefix: /opt/slurm/{{ slurm_version }}
 
 
 #these ones can be changed depending on your setup:
-slurm_user: vagrant
+slurm_user: slurm
 munge_passwd: slurmz
 cpus_per_node: 1
 partition_name: debug

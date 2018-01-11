@@ -4,7 +4,7 @@ After=network.target
 ConditionPathExists={{ slurm_prefix }}/etc/slurm.conf
 
 [Service]
-User={{ slurm_user }}
+User=root
 Type=forking
 EnvironmentFile=-/etc/sysconfig/slurmd
 ExecStart={{ slurm_prefix }}/sbin/slurmd $SLURMD_OPTIONS

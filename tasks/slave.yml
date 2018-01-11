@@ -1,9 +1,0 @@
----
-
-- name: enable slurmd service
-  systemd:
-    name: slurmd
-    enabled: yes
-    state: started
-
-

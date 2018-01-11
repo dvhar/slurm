@@ -56,35 +56,29 @@
 - name: copy slurm config
   template: src=slurm.conf.j2 dest={{ slurm_prefix}}/etc/slurm.conf owner=root group=root mode=0644
 
-#- name: copy slurm config example
-#  template: src={{ item}} dest={{ slurm_prefix }}/etc owner=root group=root mode=0644
-#  with_items:
-#    - slurm.conf
-
-
 - name: copy slurmdbd config example
   copy: src=slurmdbd.conf.example dest={{ slurm_prefix }}/etc owner=root group=root mode=0644
 
-#- name: create slurm group
-  #group: name=slurm gid=105 state=present
+- name: create slurm group
+  group: name=slurm gid=105 state=present
 
-#- name: create slurm user
-  #user: name=slurm uid=105 group=slurm createhome=no home={{ slurm_prefix }} shell=/bin/nologin state=present
+- name: create slurm user
+  user: name={{ slurm_user }} uid=105 group=slurm  home={{ slurm_prefix }} system=yes shell=/bin/bash state=present
 
 - name: create slurm directories
-  file: path={{ item }} state=directory owner={{ slurm_user }} mode=755
+  file: path={{ item }} state=directory owner={{ slurm_user }} mode=0755
   with_items:
     - /var/spool/slurmd
     - /var/log/slurm
 
 - name: create slurm var files
-  file: path={{ item }} state=touch owner={{ slurm_user }} group={{ slurm_user }} mode=755
+  file: path={{ item }} state=touch owner={{ slurm_user }} group={{ slurm_user }} mode=0644
   with_items:
-    - /var/spool/slurmd
     - /var/log/slurm/slurmctld.log
     - /var/log/slurm/slurmctld.pid
     - /var/log/slurm/slurmd.log
     - /var/log/slurm/slurmd.pid
+    - /var/log/slurm/accounting
 
 
 - include: "hoststuff.yml"
