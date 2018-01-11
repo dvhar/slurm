@@ -9,8 +9,7 @@ This role simply installs SLURM Workload Manager with the following configuratio
 - Slurmd spool directory: `/var/spool/slurmd`
 - PAM Slurm: `/lib64/security/pam_slurm.so`
 
-- currently works on 2 vagrant machines
-- examples directory predates my tinkering with it, may not work now
+- examples directory predates my tinkering with it, may be deprecated
 
 Platforms
 ---------
@@ -34,19 +33,18 @@ Example Playbook
 
 Include the role like this:
 
+  - hosts: vcluster2
+    tasks: [ ]
 
-    - hosts: vcluster
-      tasks: [ ]
+  - hosts: controller
+    become: true
+    roles:
+    - { role: slurm, cluster: vcluster2, node_type: master }
 
-    - hosts: first
-      become: true
-      roles:
-      - { role: slurm, node_type: master }
-
-    - hosts: second
-      become: true
-      roles:
-      - { role: slurm, node_type: slave }
+  - hosts: workers
+    become: true
+    roles:
+    - { role: slurm, cluster: vcluster2, node_type: slave }
 
 License
 -------
