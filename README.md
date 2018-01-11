@@ -33,18 +33,18 @@ Example Playbook
 
 Include the role like this:
 
-  - hosts: vcluster2
-    tasks: [ ]
-
-  - hosts: controller
-    become: true
-    roles:
-    - { role: slurm, cluster: vcluster2, node_type: master }
-
-  - hosts: workers
-    become: true
-    roles:
-    - { role: slurm, cluster: vcluster2, node_type: slave }
+    - hosts: vcluster2
+      tasks: [ ]
+  
+    - hosts: controller
+      become: true
+      roles:
+      - { role: slurm, cluster: vcluster2, node_type: master }
+  
+    - hosts: workers
+      become: true
+      roles:
+      - { role: slurm, cluster: vcluster2, node_type: slave }
 
 License
 -------
