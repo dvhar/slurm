@@ -9,12 +9,10 @@ This role simply installs SLURM Workload Manager with the following configuratio
 - Slurmd spool directory: `/var/spool/slurmd`
 - PAM Slurm: `/lib64/security/pam_slurm.so`
 
-- examples directory predates my tinkering with it, may be deprecated
-
 Platforms
 ---------
 
-CentOS 6.7 and 7.2 are supported and tested so far.
+CentOS 7 is supported and tested so far.
 
 Default Variables
 -----------------
