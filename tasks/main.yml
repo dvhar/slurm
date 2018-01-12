@@ -69,7 +69,7 @@
   file: path={{ item }} state=directory owner={{ slurm_user }} mode=0755
   with_items:
     - /var/spool/slurmd
-    - /var/log/slurm
+    - /var/log/slurm/state
 
 - name: create slurm var files
   file: path={{ item }} state=touch owner={{ slurm_user }} group={{ slurm_user }} mode=0644
@@ -111,6 +111,5 @@
    - "alias se='systemctl enable'"
    - "alias sd='systemctl disable'"
    - "alias sn='systemctl restart'"
-   - "PATH=$PATH:{{ slurm_prefix }}/sbin"
    - "PATH=$PATH:{{ slurm_prefix }}/bin"
    - "export PATH"
