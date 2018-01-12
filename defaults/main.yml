@@ -9,3 +9,5 @@ cpus_per_node: 1
 
 munge_passwd: slurmz
 partition_name: debug
+
+test_or_real: test
