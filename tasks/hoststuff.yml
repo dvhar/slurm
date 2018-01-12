@@ -1,5 +1,5 @@
 
-- name: put nodes in hostfile on test machines
+- name: put nodes in hostfile on virtual test machines
   lineinfile:
     dest=/etc/hosts
     line="{{ hostvars[item].ansible_eth1.ipv4.address }} {{ item }}"
