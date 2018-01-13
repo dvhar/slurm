@@ -88,14 +88,14 @@
     name: slurmd
     enabled: yes
     state: started
-  when: node_type == "slave"
+  when: "'workers' in group_names"
 
 - name: enable slurmctld service
   systemd:
     name: slurmctld
     enabled: yes
     state: started
-  when: node_type == "master"
+  when: "'controller' in group_names"
 
 
 

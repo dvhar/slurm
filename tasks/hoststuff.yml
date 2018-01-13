@@ -5,7 +5,8 @@
     line="{{ hostvars[item].ansible_eth1.ipv4.address }} {{ item }}"
     state=present
   with_items:
-   - "{{ groups[cluster] }}"
+   - "{{ groups['controller'] }}"
+   - "{{ groups['workers'] }}"
   when: test_or_real == "test"
 
 - name: put nodes in hostfile
@@ -14,7 +15,8 @@
     line="{{ hostvars[item].ansible_default_ipv4.address }} {{ item }}"
     state=present
   with_items:
-   - "{{ groups[cluster] }}"
+   - "{{ groups['controller'] }}"
+   - "{{ groups['workers'] }}"
   when: test_or_real == "real"
 
 

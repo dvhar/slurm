@@ -26,23 +26,29 @@ Dependencies
 
 None.
 
-Example Playbook
+Example Playbook and Inventory
 ----------------
 
 Include the role like this:
 
-    - hosts: vcluster2
-      tasks: [ ]
-  
-    - hosts: controller
+    - hosts: slurmcluster
       become: true
       roles:
-      - { role: slurm, cluster: vcluster2, node_type: master }
-  
-    - hosts: workers
-      become: true
-      roles:
-      - { role: slurm, cluster: vcluster2, node_type: slave }
+      - role: slurm
+
+make sure the inventory file has groups 'controller' and 'workers' like this:
+
+    [slurmcluster:children]
+    controller
+    workers
+
+    [controller]
+    headnodename
+
+    [workers]
+    worknode1
+    worknode2
+    worknode3
 
 License
 -------
