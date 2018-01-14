@@ -18,6 +18,7 @@
     - gtk2-devel
     - perl-devel
     - perl-CPAN
+    - bzip2
 
 
 - stat: path=/etc/munge/munge.key
