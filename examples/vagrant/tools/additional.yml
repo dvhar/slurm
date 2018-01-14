@@ -1,0 +1,51 @@
+  - hosts: vcluster2
+    become: true
+    tasks:
+      - name: yum install packages
+        yum: name={{ item }} state=present
+        with_items:
+          - tmux
+          - mlocate
+          - git
+          - htop
+  #        - vim
+      - name: git repos
+        git:
+          repo: 'https://github.com/dharhar/jump.git'
+          dest: /home/vagrant/.jumper/
+
+      - name: put jump in path
+        copy:
+          src: /home/vagrant/.jumper/jump.sh
+          dest: /bin/jump.sh
+          remote_src: yes
+          mode: 0777
+
+      - name: lines in bashrc
+        lineinfile:
+          dest=/etc/bashrc
+          line={{ item }}
+          state=present
+        with_items:
+         - "alias j='. jump.sh'"
+  #       - "alias vi='vim'"
+         - "set -o vi"
+
+      - name: make jumps file
+        file: path=/home/vagrant/.jumps state=touch
+        mode: 0755
+
+      - name: populate jumps file for slurm
+        lineinfile:
+          dest=/home/vagrant/.jumps
+          line={{ item }}
+          state=present
+        with_items:
+         - "slurm /opt/slurm/17.11.1-2/"
+         - "etc /opt/slurm/17.11.1-2/etc/"
+         - "bin /opt/slurm/17.11.1-2/bin/"
+         - "sbin /opt/slurm/17.11.1-2/sbin/"
+         - "log /var/log/slurm/"
+         - "spool /var/spool/"
+         - "tmp /tmp/"
+         - "mun /etc/munge/"
