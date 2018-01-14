@@ -5,10 +5,20 @@ slurm_version: 17.11.1-2
 slurm_url: https://download.schedmd.com/slurm/slurm-{{ slurm_version }}.tar.bz2
 slurm_prefix: /opt/slurm/{{ slurm_version }}
 slurm_user: slurm
-cpus_per_node: 1
+#cpus_per_node: 1
 
-munge_passwd: slurmz
-partition_name: debug
+munge_passwd: slurmz1
+partition_name: calitest
 cluster: slurmy
 
-test_or_real: test
+test_or_real: real
+
+workers_params:
+  - nodename: cancun
+    cpus_per_node: 8
+  - nodename: rio
+    cpus_per_node: 8
+  - nodename: salsa
+    cpus_per_node: 8
+  - nodename: vallarta
+    cpus_per_node: 4

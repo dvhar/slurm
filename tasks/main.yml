@@ -18,6 +18,7 @@
     - gtk2-devel
     - perl-devel
     - perl-CPAN
+    - bzip2
 
 
 - stat: path=/etc/munge/munge.key
@@ -54,7 +55,7 @@
   file: path={{ slurm_prefix }}/etc state=directory owner=root group=root mode=0755
 
 - name: copy slurm config
-  template: src=slurm.conf.j2 dest={{ slurm_prefix}}/etc/slurm.conf owner=root group=root mode=0644
+  template: src=slurm.conf.j2 dest={{ slurm_prefix }}/etc/slurm.conf owner=root group=root mode=0644
 
 - name: copy slurmdbd config example
   copy: src=slurmdbd.conf.example dest={{ slurm_prefix }}/etc owner=root group=root mode=0644

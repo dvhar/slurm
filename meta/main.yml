@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  author: Koji Tanaka
+  author: Koji Tanaka and David Hardy
   description: Installs SLURM Workload Manager
   company: RDI2
   license: MIT
@@ -8,7 +8,6 @@ galaxy_info:
   platforms:
     - name: EL
       versions:
-        - 6
         - 7
   categories:
     - packaging
