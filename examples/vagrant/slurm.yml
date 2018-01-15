@@ -1,12 +1,5 @@
-  - hosts: vcluster
-    tasks: [ ]
 
-  - hosts: controller
+  - hosts: vcluster2
     become: true
     roles:
-    - { role: RDI2.slurm, cluster: vcluster, node_type: master }
-
-  - hosts: workers
-    become: true
-    roles:
-    - { role: RDI2.slurm, cluster: vcluster, node_type: slave }
+    - role: slurm

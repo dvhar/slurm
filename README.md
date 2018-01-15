@@ -12,7 +12,7 @@ This role simply installs SLURM Workload Manager with the following configuratio
 Platforms
 ---------
 
-CentOS 7 is supported and tested so far.
+CentOS 6 and 7
 
 Default Variables
 -----------------

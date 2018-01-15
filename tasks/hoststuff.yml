@@ -20,6 +20,6 @@
   when: test_or_real == "real"
 
 
-- name: set hostname
-  hostname:
-    name: "{{ inventory_hostname }}"
+#- name: set hostname
+#  hostname:
+#    name: "{{ inventory_hostname }}"

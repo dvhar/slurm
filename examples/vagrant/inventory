@@ -1,9 +1,9 @@
-[vcluster2]
-first ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
-second ansible_ssh_host=127.0.0.1 ansible_ssh_port=2200
+[vcluster2:children]
+controller
+workers
 
 [controller]
-first
+first ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
 
 [workers]
-second
+second ansible_ssh_host=127.0.0.1 ansible_ssh_port=2200
