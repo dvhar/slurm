@@ -36,12 +36,15 @@ AccountingStorageLoc=/var/log/slurm/accounting
 
 # 
 # COMPUTE NODES
+#
+#
 
 
-{% for wn in workers_params %}
-NodeName={{ wn.nodename }} CPUs={{ wn.cpus_per_node }} State=UNKNOWN
+
+{% for wn in groups['workers'] %}
+NodeName={{ wn }} CPUs={{ cpus_per_node }} State=UNKNOWN
 {% endfor %}
 
-
-PartitionName={{ partition_name }} Nodes={% for wn in workers_params -%}{{ wn.nodename }}{% if not loop.last -%}
+PartitionName={{ partition_name }} Nodes={% for wn in groups['workers'] -%}{{ wn }}{% if not loop.last -%}
 ,{% endif %}{% endfor %} Default=YES MaxTime=INFINITE State=UP
+

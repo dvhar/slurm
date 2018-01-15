@@ -43,13 +43,17 @@
 - include: install.yml
   when: slurm_bin.stat.exists == False
 
-- name: copy slurmctl startup script
+- name: copy slurmctl systemd startup script
   template: src=slurmctld.service.j2 dest=/usr/lib/systemd/system/slurmctld.service owner=root group=root mode=0700
   when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == "7"
 
-- name: copy slurm startup script
+- name: copy slurmd systemd startup script
   template: src=slurmd.service.j2 dest=/usr/lib/systemd/system/slurmd.service owner=root group=root mode=0700
   when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == "7"
+
+- name: copy slurm init startup script
+  template: src=init.d.slurm.j2 dest=/etc/init.d/slurm owner=root group=root mode=0700
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == "6"
 
 - name: create config directory
   file: path={{ slurm_prefix }}/etc state=directory owner=root group=root mode=0755
@@ -89,16 +93,26 @@
     name: slurmd
     enabled: yes
     state: started
-  when: "'workers' in group_names"
+  when:
+    - "'workers' in group_names"
+    - ansible_distribution == 'CentOS' and ansible_distribution_major_version == "7"
 
 - name: enable slurmctld service
   systemd:
     name: slurmctld
     enabled: yes
     state: started
-  when: "'controller' in group_names"
+  when:
+    - "'controller' in group_names"
+    - ansible_distribution == 'CentOS' and ansible_distribution_major_version == "7"
 
 
+- name: start slurm service
+  service:
+    name: slurm
+    state: started
+    enabled: yes
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == "6"
 
 - name: set path with systemwide bashrc
   lineinfile:
