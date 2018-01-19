@@ -38,8 +38,7 @@ AccountingStorageLoc=/var/log/slurm/accounting
 # 
 # COMPUTE NODES
 #
-# Ansible complains about undefined variables even when commented, so that's why 2 different conf files.
-# This one is for clusters with uniform number of cpus per node.
+# This template is for clusters with uniform number of cpus per node.
 
 
 
