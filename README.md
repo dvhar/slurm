@@ -14,13 +14,6 @@ Platforms
 
 CentOS 6 and 7
 
-Default Variables
------------------
-
-- slurm_version: `17.11.1-2`
-- slurm_url: `https://download.schedmd.com/slurm/slurm-{{ slurm_version }}.tar.bz2`
-- slurm_prefix: `/opt/slurm/{{ slurm_version }}`
-
 Dependencies
 ------------
 

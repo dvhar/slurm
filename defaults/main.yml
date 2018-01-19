@@ -13,6 +13,7 @@ cluster: slurmy
 
 test_or_real: real
 
+#for clusters with different numbers of cpus per node
 workers_params:
   - nodename: cancun
     cpus_per_node: 8

@@ -126,5 +126,6 @@
    - "alias se='systemctl enable'"
    - "alias sd='systemctl disable'"
    - "alias sn='systemctl restart'"
+   - "alias serve='python -m SimpleHTTPServer'"
    - "PATH=$PATH:{{ slurm_prefix }}/bin"
    - "export PATH"
