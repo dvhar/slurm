@@ -74,6 +74,12 @@
   when:
     - "'controller' in group_names"
 
+- name: copy kill/resume scripts
+  template: src={{ item }} dest=/{{ slurm_prefix }}/bin  owner={{ slurm_user }}  mode=0777
+  with_items:
+    - nodekill
+    - resume
+
 - name: create slurm group
   group: name=slurm gid=105 state=present
 

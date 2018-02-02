@@ -1,0 +1,5 @@
+#!/bin/bash
+nodes="{% for x in groups['workers'] %}{{x}} {% endfor %}"
+for x in $nodes; do
+scontrol update NodeName=${x} State=DOWN reason=bad
+done
