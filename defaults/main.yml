@@ -5,13 +5,27 @@ slurm_version: 17.11.1-2
 slurm_url: https://download.schedmd.com/slurm/slurm-{{ slurm_version }}.tar.bz2
 slurm_prefix: /opt/slurm/{{ slurm_version }}
 slurm_user: slurm
-#cpus_per_node: 1
 
+#home directoy to place test script
+test_user: vagrant
+
+#creates the munge hash
 munge_passwd: slurmz
-partition_name: testing
-cluster: slurmy
 
-test_or_real: real
+#physical computers or vagrant virtual machines
+test_or_real: test
+
+#edit hosts file and hostname (true/false)
+hoststuff: true
+
+#open firewall port. check shell command in tasks/main.yml. not idempotent (true/false)
+open_fire: true
+
+#cpus per node
+same_or_diff: same
+
+#for clusters with uniform number of cpus per node
+cpus_per_node: 1
 
 #for clusters with different numbers of cpus per node
 workers_params:

@@ -58,11 +58,21 @@
 - name: create config directory
   file: path={{ slurm_prefix }}/etc state=directory owner=root group=root mode=0755
 
-- name: copy slurm config
-  template: src=slurm.conf.j2 dest={{ slurm_prefix }}/etc/slurm.conf owner=root group=root mode=0644
+- name: copy slurm config to uneven clusters
+  template: src=slurm.conf.diff.j2 dest={{ slurm_prefix }}/etc/slurm.conf owner=root group=root mode=0644
+  when: same_or_diff == 'diff'
+
+- name: copy slurm config to uniform clusters
+  template: src=slurm.conf.same.j2 dest={{ slurm_prefix }}/etc/slurm.conf owner=root group=root mode=0644
+  #when: same_or_diff == 'same'
 
 - name: copy slurmdbd config example
   copy: src=slurmdbd.conf.example dest={{ slurm_prefix }}/etc owner=root group=root mode=0644
+
+- name: copy test script
+  copy: src=test.sh dest=/home/{{ test_user }}/ owner={{ test_user }} mode=0777
+  when:
+    - "'controller' in group_names"
 
 - name: create slurm group
   group: name=slurm gid=105 state=present
@@ -85,8 +95,25 @@
     - /var/log/slurm/slurmd.pid
     - /var/log/slurm/accounting
 
+- name: open firewall port on headnode
+  shell: iptables -A INPUT -p tcp -m tcp --dport 6817 -m conntrack --ctstate NEW -j ACCEPT
+  #shell: iptables -A IN_public_allow -p tcp -m tcp --dport 6817 -m conntrack --ctstate NEW -j ACCEPT
+  #shell: firewall-cmd --permanent --add-port 6817
+  when:
+    - open_fire == true
+    - "'controller' in group_names"
+
+- name: open firewall port on compute nodes
+  shell: iptables -A INPUT -p tcp -m tcp --dport 6818 -m conntrack --ctstate NEW -j ACCEPT
+  #shell: iptables -A IN_public_allow -p tcp -m tcp --dport 6818 -m conntrack --ctstate NEW -j ACCEPT
+  #shell: firewall-cmd --permanent --add-port 6818
+  when:
+    - open_fire == true
+    - "'workers' in group_names"
 
 - include: "hoststuff.yml"
+  when:
+    - hoststuff == true
 
 - name: enable slurmd service
   systemd:
