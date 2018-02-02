@@ -64,7 +64,7 @@
 
 - name: copy slurm config to uniform clusters
   template: src=slurm.conf.same.j2 dest={{ slurm_prefix }}/etc/slurm.conf owner=root group=root mode=0644
-  #when: same_or_diff == 'same'
+  when: same_or_diff == 'same'
 
 - name: copy slurmdbd config example
   copy: src=slurmdbd.conf.example dest={{ slurm_prefix }}/etc owner=root group=root mode=0644
