@@ -1,0 +1,10 @@
+  - hosts: cluster
+    tasks:
+
+      - name: test server name
+        ping:
+      #- debug: msg="{{hostvars[item].ansible_all_ipv4_addresses[0]}}"
+      #- debug: msg="{{hostvars[item].ansible_eth1.ipv4.address}}"
+        #with_items:
+         #- "{{ groups['cluster'] }}"
+      - debug: msg="{{ hostvars }}"
