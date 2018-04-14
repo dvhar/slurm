@@ -106,7 +106,7 @@
   #shell: iptables -A IN_public_allow -p tcp -m tcp --dport 6817 -m conntrack --ctstate NEW -j ACCEPT
   #shell: firewall-cmd --permanent --add-port 6817
   when:
-    - open_fire == true
+    - open_fire
     - "'controller' in group_names"
 
 - name: open firewall port on compute nodes
@@ -114,12 +114,11 @@
   #shell: iptables -A IN_public_allow -p tcp -m tcp --dport 6818 -m conntrack --ctstate NEW -j ACCEPT
   #shell: firewall-cmd --permanent --add-port 6818
   when:
-    - open_fire == true
+    - open_fire
     - "'workers' in group_names"
 
 - include: "hoststuff.yml"
-  when:
-    - hoststuff == true
+  when: hoststuff
 
 - name: enable slurmd service
   systemd:
@@ -134,7 +133,7 @@
   systemd:
     name: slurmctld
     enabled: yes
-    state: started
+    state: restarted
   when:
     - "'controller' in group_names"
     - ansible_distribution == 'CentOS' and ansible_distribution_major_version == "7"

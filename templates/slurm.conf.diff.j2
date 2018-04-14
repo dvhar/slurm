@@ -2,7 +2,7 @@ ControlMachine={{ groups['controller'][0] }}
 #ControlAddr=127.0.0.1
 
 AuthType=auth/munge
-ClusterName=primo
+ClusterName={{ cluster }}
 CryptoType=crypto/munge
 FastSchedule=1
 JobAcctGatherType=jobacct_gather/none
@@ -46,5 +46,5 @@ NodeName={{ wn.nodename }} CPUs={{ wn.cpus_per_node }} State=UNKNOWN
 {% endfor %}
 
 
-PartitionName=thecluster Nodes={% for wn in workers_params -%}{{ wn.nodename }}{% if not loop.last -%}
+PartitionName={{ partition_name }} Nodes={% for wn in workers_params -%}{{ wn.nodename }}{% if not loop.last -%}
 ,{% endif %}{% endfor %} Default=YES MaxTime=INFINITE State=UP

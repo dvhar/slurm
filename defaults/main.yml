@@ -1,16 +1,17 @@
 ---
 # defaults file for slurm
 
-slurm_version: 17.11.1-2
+slurm_version: 17.11.5
 slurm_url: https://download.schedmd.com/slurm/slurm-{{ slurm_version }}.tar.bz2
 slurm_prefix: /opt/slurm/{{ slurm_version }}
 slurm_user: slurm
 
 #home directoy to place test script
 test_user: vagrant
+munge_passwd: slurmz1
+partition_name: rioclus
+cluster: slurmy
 
-#creates the munge hash
-munge_passwd: slurmz
 
 #physical computers or vagrant virtual machines
 test_or_real: test
@@ -36,4 +37,6 @@ workers_params:
   - nodename: salsa
     cpus_per_node: 8
   - nodename: vallarta
+    cpus_per_node: 4
+  - nodename: cali
     cpus_per_node: 4
