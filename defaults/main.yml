@@ -5,13 +5,12 @@ slurm_version: 17.11.5
 slurm_url: https://download.schedmd.com/slurm/slurm-{{ slurm_version }}.tar.bz2
 slurm_prefix: /opt/slurm/{{ slurm_version }}
 slurm_user: slurm
-
-#home directoy to place test script
-test_user: vagrant
 munge_passwd: slurmz1
 partition_name: rioclus
 cluster: slurmy
 
+#home directoy to place test script
+test_user: vagrant
 
 #physical computers or vagrant virtual machines
 test_or_real: test
@@ -20,7 +19,7 @@ test_or_real: test
 hoststuff: true
 
 #open firewall port. check shell command in tasks/main.yml. not idempotent (true/false)
-open_fire: true
+open_fire: false
 
 #cpus per node
 same_or_diff: same

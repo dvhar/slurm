@@ -20,6 +20,11 @@
     - perl-CPAN
     - bzip2
 
+- name: create slurm group
+  group: name=slurm gid=105 state=present
+
+- name: create slurm user
+  user: name={{ slurm_user }} uid=105 group=slurm  home={{ slurm_prefix }} system=yes shell=/bin/bash state=present
 
 - stat: path=/etc/munge/munge.key
   register: munge_key
@@ -79,12 +84,6 @@
   with_items:
     - nodekill
     - resume
-
-- name: create slurm group
-  group: name=slurm gid=105 state=present
-
-- name: create slurm user
-  user: name={{ slurm_user }} uid=105 group=slurm  home={{ slurm_prefix }} system=yes shell=/bin/bash state=present
 
 - name: create slurm directories
   file: path={{ item }} state=directory owner={{ slurm_user }} mode=0755
